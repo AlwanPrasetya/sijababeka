@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <style>
+        .card {
+            margin-bottom: 20px;
+            position: relative;
+            height: 200px; /* Tinggi kartu */
+        }
+
+        .card img {
+            position: absolute;
+            top: -140px; /* Atur posisi logo */
+            left: 50%;
+            transform: translateX(-50%);
+            max-width: 180px;
+            max-height: 140px;
+            width: auto;
+            height: auto;
+            z-index: 1;
+        }
+
+        .card-body {
+            text-align: center;
+            padding: 60px 30px; /* Atur padding di sini */
+            position: relative; /* Tambahkan properti ini untuk mengatur posisi teks */
+        }
+
+        .card-icon {
+            font-size: 50px;
+            color: #007bff;
+            z-index: 2; /* Pastikan ikon berada di depan logo */
+        }
+
+        .card-title {
+            margin-top: 20px;
+            font-size: 13px; /* Kurangi ukuran teks keterangan */
+            margin-bottom: 0;
+            font-style: italic;
+            position: relative; /* Tambahkan properti ini untuk mengatur posisi teks */
+            z-index: 3; /* Pastikan teks berada di depan logo */
+        }
+
+        .card-link {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* CSS untuk mengatur posisi kartu */
+        .container {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .row {
+            padding: 50px ;
+        }
+
+        /* Media queries untuk layout responsif */
+        @media (max-width: 768px) {
+            .card {
+                height: auto; /* Set ulang tinggi kartu agar bisa menyesuaikan konten */
+            }
+            .card img {
+                top: -100px; /* Atur ulang posisi logo */
+                max-width: 120px; /* Atur ulang lebar maksimum logo */
+                max-height: 100px; /* Atur ulang tinggi maksimum logo */
+            }
+            .card-body {
+                padding: 40px 20px; /* Atur ulang padding kartu */
+            }
+            .card-icon {
+                font-size: 40px; /* Atur ulang ukuran ikon */
+            }
+            .card-title {
+                font-size: 12px; /* Atur ulang ukuran teks keterangan */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <a href="fpk.php" class="card-link">
+                    <div class="card"><!-- Ganti path_to_your_logo dengan path logo Anda -->
+                        <div class="card-body">
+                            <i class="fas fa-address-card card-icon"></i>
+                            <h5 class="card-title">FPK</h5>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-4">
+                <a href="./karyawan/tetap/index.php" class="card-link">
+                    <div class="card">
+                        <img src="./img/logo-jababeka.webp" alt="Logo"> <!-- Ganti path_to_your_logo dengan path logo Anda -->
+                        <div class="card-body">
+                            <i class="fas fa-users card-icon"></i>
+                            <h5 class="card-title">Employee</h5>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-4">
+                <a href="./bisnis/create_bisnis.php" class="card-link">
+                    <div class="card"> <!-- Ganti path_to_your_logo dengan path logo Anda -->
+                        <div class="card-body">
+                            <i class="fas fa-cog card-icon"></i>
+                            <h5 class="card-title">Settings</h5>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

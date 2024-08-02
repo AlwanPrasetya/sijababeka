@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Dashboard</title>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+	<style>
+		body {
+			background-color: #f8f9fa;
+			font-family: Arial, sans-serif;
+		}
+
+		h4 {
+			color: #007bff;
+			text-align: center;
+			margin-top: 30px;
+		}
+
+		.card {
+			margin-bottom: 20px;
+			position: relative;
+			height: 190px;
+			/* Tinggi kartu */
+		}
+
+		.card img {
+			position: absolute;
+			top: -230px;
+			/* Atur posisi logo */
+			left: 150px;
+			transform: translateX(-50%);
+			max-width: 120px;
+			max-height: 120px;
+			width: auto;
+			height: auto;
+			z-index: 1;
+		}
+
+		.card-body {
+			text-align: center;
+			padding: 60px 30px;
+			/* Atur padding di sini */
+			position: relative;
+			/* Tambahkan properti ini untuk mengatur posisi teks */
+		}
+
+		.card-icon {
+			font-size: 50px;
+			color: #007bff;
+			z-index: 2;
+			/* Pastikan ikon berada di depan logo */
+		}
+
+		.card-title {
+			margin-top: 10px;
+			font-size: 13px;
+			/* Kurangi ukuran teks keterangan */
+			margin-bottom: 0;
+			font-style: italic;
+			position: relative;
+			/* Tambahkan properti ini untuk mengatur posisi teks */
+			z-index: 3;
+			/* Pastikan teks berada di depan logo */
+		}
+
+		.card-link {
+			text-decoration: none;
+			color: inherit;
+		}
+
+		/* CSS untuk mengatur posisi kartu */
+		.container {
+			height: 100vh;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+
+		.row {
+			padding: 50px;
+		}
+
+		/* Media queries untuk layout responsif */
+		@media (max-width: 768px) {
+			.card {
+				height: auto;
+				/* Set ulang tinggi kartu agar bisa menyesuaikan konten */
+			}
+
+			.card img {
+				top: -100px;
+				/* Atur ulang posisi logo */
+				max-width: 100px;
+				/* Atur ulang lebar maksimum logo */
+				max-height: 100px;
+				/* Atur ulang tinggi maksimum logo */
+			}
+
+			.card-body {
+				padding: 20px 20px;
+				/* Atur ulang padding kartu */
+			}
+
+			.card-icon {
+				font-size: 40px;
+				/* Atur ulang ukuran ikon */
+			}
+
+			.card-title {
+				font-size: 12px;
+				/* Atur ulang ukuran teks keterangan */
+			}
+		}
+	</style>
+</head>
+
+
+<body>
+
+	<h4>SELAMAT DATANG, <strong>DIREKSI</strong></h4>
+	<div class="container">
+			<div class="col-md-4">
+				<a href="./direksi1.html" class="card-link">
+					<div class="card">
+						<div class="card-body">
+							<i class="fas fa-users card-icon"></i>
+							<h5 class="card-title">DIREKSI 1</h5>
+						</div>
+					</div>
+				</a>
+			</div>
+			<div class="col-md-4">
+				<a href="./direksi2.html" class="card-link">
+					<div class="card">
+						<img src="./img/logo-jababeka.webp" alt="Logo">
+						<div class="card-body">
+							<i class="fas fa-users card-icon"></i>
+							<h5 class="card-title">DIREKSI 2</h5>
+						</div>
+					</div>
+				</a>
+			</div>
+			<div class="col-md-4">
+				<a href="./direksi3.html" class="card-link">
+					<div class="card">
+						<div class="card-body">
+							<i class="fas fa-users card-icon"></i>
+							<h5 class="card-title">DIREKSI 3</h5>
+						</div>
+					</div>
+				</a>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>

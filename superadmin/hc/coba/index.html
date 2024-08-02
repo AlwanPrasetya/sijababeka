@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Candidate Data Form</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+  <div>
+    <label for="id_candidates">Pilih Kandidat:</label>
+    <select id="id_candidates" name="id_candidates">
+      <!-- Option elements will be populated dynamically -->
+    </select>
+  </div>
+  <div style="margin-bottom: -10px; display: flex; align-items: center; width: 90%;">
+    <input type="text" id="nama_kandidat" name="nama_kandidat" placeholder="Nama Kandidat" required>
+  </div>
+  <div style="margin-bottom: -10px; display: flex; align-items: center; width: 90%;">
+    <input type="date" id="form_confirmation_letter_lengkap" name="form_confirmation_letter">
+  </div>
+  <div style="margin-bottom: -10px; display: flex; align-items: center; width: 90%;">
+    <input type="text" id="no_ktp" name="no_ktp" placeholder="No. KTP" required>
+  </div>
+  <div style="margin-bottom: -10px; display: flex; align-items: center; width: 90%;">
+    <input type="text" id="pendidikan" name="pendidikan" placeholder="Pendidikan" required>
+  </div>
+  <div style="margin-bottom: -10px; display: flex; align-items: center; width: 90%;">
+    <input type="text" id="alasan_penerimaan" name="alasan_penerimaan" placeholder="Alasan Penerimaan" required>
+  </div>
+
+  <script>
+    $(document).ready(function () {
+      // Fetch candidates for the dropdown
+      $.ajax({
+        type: "GET",
+        url: "get_candidates.php",
+        dataType: "json",
+        success: function (response) {
+          if (response.length > 0) {
+            response.forEach(function (candidate) {
+              $('#id_candidates').append(new Option(candidate.nama, candidate.id_candidates));
+            });
+          } else {
+            $('#id_candidates').append(new Option("No candidates available", ""));
+          }
+        },
+        error: function (xhr, status, error) {
+          console.error(xhr);
+        }
+      });
+
+      // Fetch data when a candidate is selected
+      $('#id_candidates').change(function () {
+        var id_candidates = $(this).val();
+        $.ajax({
+          type: "POST",
+          url: "get_candidate_data.php",
+          data: { id_candidates: id_candidates },
+          dataType: "json",
+          success: function (response) {
+            if (!response.error) {
+              $('#nama_kandidat').val(response.applicant_name);
+              $('#form_confirmation_letter_lengkap').val(response.applicant_dob);
+              $('#no_ktp').val(response.ktp_number);
+              $('#pendidikan').val(response.education);
+              $('#alasan_penerimaan').val(response.request_for);
+            } else {
+              alert(response.error);
+            }
+          },
+          error: function (xhr, status, error) {
+            console.error(xhr);
+          }
+        });
+      });
+    });
+  </script>
+</body>
+
+</html>

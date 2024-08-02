@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulir Permintaan Karyawan</title>
+    <style>
+        /* CSS untuk styling halaman */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        form {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"],
+        input[type="date"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2>Formulir Permintaan Karyawan</h2>
+        <form id="employeeRequestForm" action="process_request.php" method="post">
+            <label for="employeeName">Nama Karyawan:</label>
+            <input type="text" id="employeeName" name="employeeName" required>
+
+            <label for="requestType">Jenis Permintaan:</label>
+            <select id="requestType" name="requestType" required>
+                <option value="">Pilih Jenis Permintaan</option>
+                <option value="resign">Resign</option>
+                <option value="mutation">Mutasi</option>
+                <option value="promotion">Promosi</option>
+                <option value="demotion">Demosi</option>
+            </select>
+
+            <div id="replacementSection" style="display: none;">
+                <label for="replacementEmployee">Karyawan Pengganti:</label>
+                <select id="replacementEmployee" name="replacementEmployee">
+                    <option value="">Pilih Karyawan Pengganti</option>
+                    <!-- Option diisi dengan data karyawan yang tersedia -->
+                </select>
+            </div>
+
+            <div id="reasonSection" style="display: none;">
+                <label for="reason">Alasan:</label>
+                <textarea id="reason" name="reason" rows="4" required></textarea>
+            </div>
+
+            <label for="effectiveDate">Tanggal Efektif:</label>
+            <input type="date" id="effectiveDate" name="effectiveDate" required>
+
+            <input type="submit" value="Submit">
+        </form>
+    </div>
+
+    <script>
+        document.getElementById("requestType").addEventListener("change", function() {
+            var requestType = this.value;
+            if (requestType === "resign" || requestType === "demotion") {
+                document.getElementById("reasonSection").style.display = "block";
+            } else {
+                document.getElementById("reasonSection").style.display = "none";
+            }
+
+            if (requestType === "mutation" || requestType === "promotion") {
+                document.getElementById("replacementSection").style.display = "block";
+            } else {
+                document.getElementById("replacementSection").style.display = "none";
+            }
+        });
+    </script>
+</body>
+
+</html>
