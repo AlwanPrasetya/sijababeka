@@ -18,7 +18,7 @@ if (isset($_POST['kodeFPK'])) {
   $sql = "
     SELECT 
         golongan,
-        branch,
+        namaUnit,
         jabatan,
         organisasi
     FROM 

@@ -93,7 +93,7 @@ include('sidebar.php');
                                             $sql = "SELECT fpk.*, persetujuan.Status_Penyetujuan, persetujuan.persetujuanAtasan, persetujuan.persetujuanUser 
                                             FROM fpk 
                                             LEFT JOIN persetujuan ON fpk.kodeFPK = persetujuan.kodeFPK 
-                                            WHERE fpk.branch = '$branch'";
+                                            WHERE fpk.namaUnit = '$branch'";
 
                                             // Jalankan kueri SQL untuk mendapatkan data fpk
                                             $result_fpk = $connection->query($sql);
@@ -311,7 +311,7 @@ if ($result->num_rows > 0) {
         echo "</tr>";
         echo "<tr>";
         echo "<th>bisnis</th>";
-        echo "<td>" . $row["branch"] . "</td>";
+        echo "<td>" . $row["namaUnit"] . "</td>";
         echo "</tr>";
         echo "<tr>";
         echo "<th>organisasi</th>";
@@ -327,7 +327,7 @@ if ($result->num_rows > 0) {
         echo "</tr>";
         echo "<tr>";
         echo "<th>Jenis Permintaan</th>";
-        echo "<td>" . $row["requestFor"] . "</td>";
+        echo "<td>" . $row["requestType"] . "</td>";
         echo "</tr>";
         echo "<tr>";
         echo "<th>Tanggal Permintaan</th>";

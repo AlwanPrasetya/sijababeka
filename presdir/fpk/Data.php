@@ -103,7 +103,7 @@ include('sidebar.php');
                                             echo "<td>" . $no++ . "</td>";
                                             echo "<td>" . $row["kodeFPK"] . "</td>";
                                             echo "<td>" . $row["NamaFPK"] . "</td>";
-                                            echo "<td>" . $row["branch"] . "</td>";
+                                            echo "<td>" . $row["namaUnit"] . "</td>";
                                             echo "<td>" . $row["persetujuanPresdir"] . "</td>";
                                             // Menentukan warna tombol berdasarkan status persetujuan
                                             $buttonColor = ($row["Status_Penyetujuan"] == "Approved") ? "btn-success" : "btn-danger";
@@ -299,7 +299,7 @@ if ($result->num_rows > 0) {
         echo "</tr>";
         echo "<tr>";
         echo "<th>bisnis</th>";
-        echo "<td>" . $row["branch"] . "</td>";
+        echo "<td>" . $row["namaUnit"] . "</td>";
         echo "</tr>";
         echo "<tr>";
         echo "<th>organisasi</th>";
@@ -315,7 +315,7 @@ if ($result->num_rows > 0) {
         echo "</tr>";
         echo "<tr>";
         echo "<th>Jenis Permintaan</th>";
-        echo "<td>" . $row["requestFor"] . "</td>";
+        echo "<td>" . $row["requestType"] . "</td>";
         echo "</tr>";
         echo "<tr>";
         echo "<th>Tanggal Permintaan</th>";

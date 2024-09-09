@@ -261,11 +261,13 @@ $connection->close();
 
   if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
-      echo "<div class='modal fade' id='detailModal" . $row["fpk_selection"] . "' tabindex='-1' role='dialog' aria-labelledby='detailModalLabel' aria-hidden='true'>";
+      $modalId = htmlspecialchars($row["fpk_selection"]); // Ensure the ID is safe for use
+
+      echo "<div class='modal fade' id='detailModal" . $modalId . "' tabindex='-1' role='dialog' aria-labelledby='detailModalLabel" . $modalId . "' aria-hidden='true'>";
       echo "<div class='modal-dialog modal-lg modal-dialog-scrollable modal-dialog-centered' role='document'>";
       echo "<div class='modal-content' style='border-radius: 15px;'>";
       echo "<div class='modal-header' style='background-color: #007BFF; z-index: 1050;'>";
-      echo "<h5 class='modal-title text-white' id='detailModalLabel'>Detail Request HC</h5>";
+      echo "<h5 class='modal-title text-white' id='detailModalLabel" . $modalId . "'>Detail Request HC</h5>";
       echo "<button type='button' class='close custom-button' data-dismiss='modal' aria-label='Close'>";
       echo "<span aria-hidden='true'>&times;</span>";
       echo "</button>";
@@ -277,50 +279,17 @@ $connection->close();
       echo "<tr><td colspan='2'>&nbsp;</td></tr>";
       echo "<tr><th colspan='2' style='text-align: center;'>Detail Permintaan</th></tr>";
       echo "<tr><td colspan='2'>&nbsp;</td></tr>";
-      echo "<tr>";
-      echo "<th>Kode HC</th>";
-      echo "<td>" . $row["fpk_selection"] . "</td>";
-      echo "</tr>";
-      echo "<tr>";
-      echo "<th>Nama Kandidat</th>";
-      echo "<td>" . $row["nama_kandidat"] . "</td>";
-      echo "</tr>";
-      echo "<tr>";
-      echo "<th>Bisnis</th>";
-      echo "<td>" . $row["branch"] . "</td>";
-      echo "</tr>";
-      echo "<tr>";
-      echo "<th>Organisasi</th>";
-      echo "<td>" . $row["organisasi"] . "</td>";
-      echo "</tr>";
-      echo "<tr>";
-      echo "<th>Golongan</th>";
-      echo "<td>" . $row["golongan"] . "</td>";
-      echo "</tr>";
-      echo "<tr>";
-      echo "<th>Jabatan</th>";
-      echo "<td>" . $row["jabatan"] . "</td>";
-      echo "</tr>";
-      echo "<tr>";
-      echo "<th>Jenis Permintaan</th>";
-      echo "<td>" . $row["alasan_penerimaan"] . "</td>";
-      echo "</tr>";
-      echo "<tr>";
-      echo "<th>Tanggal Permintaan</th>";
-      echo "<td>" . $row["form_tanggal_lengkap"] . "</td>";
-      echo "</tr>";
-      echo "<tr>";
-      echo "<th>Catatan</th>";
-      echo "<td>" . $row["form_tanggal_lengkap"] . "</td>";
-      echo "</tr>";
-      echo "<tr>";
-      echo "<th>No. KTP</th>";
-      echo "<td>" . $row["no_ktp"] . "</td>";
-      echo "</tr>";
-      echo "<tr>";
-      echo "<th>Pendidikan</th>";
-      echo "<td>" . $row["pendidikan"] . "</td>";
-      echo "</tr>";
+      echo "<tr><th>Kode HC</th><td>" . $modalId . "</td></tr>";
+      echo "<tr><th>Nama Kandidat</th><td>" . htmlspecialchars($row["nama_kandidat"]) . "</td></tr>";
+      echo "<tr><th>Bisnis</th><td>" . htmlspecialchars($row["branch"]) . "</td></tr>";
+      echo "<tr><th>Organisasi</th><td>" . htmlspecialchars($row["organisasi"]) . "</td></tr>";
+      echo "<tr><th>Golongan</th><td>" . htmlspecialchars($row["golongan"]) . "</td></tr>";
+      echo "<tr><th>Jabatan</th><td>" . htmlspecialchars($row["jabatan"]) . "</td></tr>";
+      echo "<tr><th>Jenis Permintaan</th><td>" . htmlspecialchars($row["alasan_penerimaan"]) . "</td></tr>";
+      echo "<tr><th>Tanggal Permintaan</th><td>" . htmlspecialchars($row["form_tanggal_lengkap"]) . "</td></tr>";
+      echo "<tr><th>Catatan</th><td>" . htmlspecialchars($row["form_catatan"]) . "</td></tr>";
+      echo "<tr><th>No. KTP</th><td>" . htmlspecialchars($row["no_ktp"]) . "</td></tr>";
+      echo "<tr><th>Pendidikan</th><td>" . htmlspecialchars($row["pendidikan"]) . "</td></tr>";
       echo "</table>";
       echo "</div>";
       echo "<div class='col-md-6'>";
@@ -328,150 +297,61 @@ $connection->close();
       echo "<tr><td colspan='2'>&nbsp;</td></tr>";
       echo "<tr><th colspan='2' style='text-align: center;'>Detail Gaji</th></tr>";
       echo "<tr><td colspan='2'>&nbsp;</td></tr>";
-      echo "<tr>";
-      echo "<th>Gaji Pokok</th>";
-      echo "<td>" . $row["gaji_pokok"] . "</td>";
-      echo "</tr>";
-      echo "<tr>";
-      echo "<th>Tunjangan Makan</th>";
-      echo "<td>" . $row["tunjangan_makan"] . "</td>";
-      echo "</tr>";
-      echo "<tr>";
-      echo "<th>Tunjangan Transport</th>";
-      echo "<td>" . $row["tunjangan_transport"] . "</td>";
-      echo "</tr>";
-      echo "<tr>";
-      echo "<th>Tunjangan Kendaraan</th>";
-      echo "<td>" . $row["tunjangan_kendaraan"] . "</td>";
-      echo "</tr>";
-      echo "<tr style='background-color: #E5E4E2;'>";
-      echo "<th>Total Sallary Gross</th>";
-      echo "<td>" . $row["total_sallary_gross"] . "</td>";
-      echo "</tr>";
-      echo "<tr>";
-      echo "<th>BPJS Jaminan Hari Tua</th>";
-      echo "<td>" . $row["bpjs_jht"] . "</td>";
-      echo "</tr>";
-      echo "<tr>";
-      echo "<th>BPJS Jaminan Pensiun</th>";
-      echo "<td>" . $row["bpjs_jp"] . "</td>";
-      echo "</tr>";
-      echo "<tr>";
-      echo "<th>BPJS Kesehatan</th>";
-      echo "<td>" . $row["bpjs_ks"] . "</td>";
-      echo "</tr>";
-      echo "<tr>";
-      echo "<th>Koperasi Karyawan</th>";
-      echo "<td>" . $row["koperasi_karyawan"] . "</td>";
-      echo "</tr>";
-      echo "<tr style='background-color: #E5E4E2;'>";
-      echo "<th>Total Sallary Nett</th>";
-      echo "<td>" . $row["total_sallary_nett"] . "</td>";
-      echo "</tr>";
-      // Tambahkan baris lain untuk detail lainnya
+      echo "<tr><th>Gaji Pokok</th><td>" . htmlspecialchars($row["gaji_pokok"]) . "</td></tr>";
+      echo "<tr><th>Tunjangan Makan</th><td>" . htmlspecialchars($row["tunjangan_makan"]) . "</td></tr>";
+      echo "<tr><th>Tunjangan Transport</th><td>" . htmlspecialchars($row["tunjangan_transport"]) . "</td></tr>";
+      echo "<tr><th>Tunjangan Kendaraan</th><td>" . htmlspecialchars($row["tunjangan_kendaraan"]) . "</td></tr>";
+      echo "<tr style='background-color: #E5E4E2;'><th>Total Sallary Gross</th><td>" . htmlspecialchars($row["total_sallary_gross"]) . "</td></tr>";
+      echo "<tr><th>BPJS Jaminan Hari Tua</th><td>" . htmlspecialchars($row["bpjs_jht"]) . "</td></tr>";
+      echo "<tr><th>BPJS Jaminan Pensiun</th><td>" . htmlspecialchars($row["bpjs_jp"]) . "</td></tr>";
+      echo "<tr><th>BPJS Kesehatan</th><td>" . htmlspecialchars($row["bpjs_ks"]) . "</td></tr>";
+      echo "<tr><th>Koperasi Karyawan</th><td>" . htmlspecialchars($row["koperasi_karyawan"]) . "</td></tr>";
+      echo "<tr style='background-color: #E5E4E2;'><th>Total Sallary Nett</th><td>" . htmlspecialchars($row["total_sallary_nett"]) . "</td></tr>";
       echo "</table>";
       echo "</div>";
       echo "</div>";
-
       echo "<div class='col-md-12 mt-5'>";
       echo "<table class='table' style='margin-top: -40px'>";
-      // echo "<tr><td colspan='2'>&nbsp;</td></tr>";
       echo "<tr><th colspan='2' style='text-align: center;'>Kelengkapan Dokumen</th></tr>";
       echo "<tr><td colspan='2'>&nbsp;</td></tr>";
       echo "</table>";
       echo "</div>";
-
       echo "<div class='row'>";
       echo "<div class='col-md-6'>";
       echo "<table class='table' style='margin-top: -40px'>";
-      echo "<tr>";
-      echo "<th>Form Aplikasi</th>";
-      echo "<td>" . $row["form_aplikasi"] . "</td>";
-      echo "</tr>";
-      echo "<tr>";
-      echo "<th>Pas Foto</th>";
-      echo "<td>" . $row["pas_foto"] . "</td>";
-      echo "</tr>";
-      echo "<tr>";
-      echo "<th>Form Interview User</th>";
-      echo "<td>" . $row["form_interview_user"] . "</td>";
-      echo "</tr>";
-      echo "<tr>";
-      echo "<th>Foto KTP</th>";
-      echo "<td>" . $row["foto_ktp"] . "</td>";
-      echo "</tr>";
-      echo "<tr>";
-      echo "<th>Form Interview HR</th>";
-      echo "<td>" . $row["form_interview_hr"] . "</td>";
-      echo "</tr>";
-      echo "<tr>";
-      echo "<th>Foto Ijazah</th>";
-      echo "<td>" . $row["foto_ijazah"] . "</td>";
-      echo "</tr>";
-      echo "<tr>";
-      echo "<th>Form Hasil Psikotest</th>";
-      echo "<td>" . $row["form_hasil_psikotest"] . "</td>";
-      echo "</tr>";
-      echo "<tr>";
-      echo "<th>Foto Transkip Nilai</th>";
-      echo "<td>" . $row["foto_transkip_nilai"] . "</td>";
-      echo "</tr>";
-      echo "<tr>";
-      echo "<th>Form Confirmation Letter</th>";
-      echo "<td>" . $row["form_confirmation_letter"] . "</td>";
-      echo "</tr>";
+      echo "<tr><th>Form Aplikasi</th><td>" . htmlspecialchars($row["form_aplikasi"]) . "</td></tr>";
+      echo "<tr><th>Pas Foto</th><td>" . htmlspecialchars($row["pas_foto"]) . "</td></tr>";
+      echo "<tr><th>Form Interview User</th><td>" . htmlspecialchars($row["form_interview_user"]) . "</td></tr>";
+      echo "<tr><th>Foto KTP</th><td>" . htmlspecialchars($row["foto_ktp"]) . "</td></tr>";
+      echo "<tr><th>Form Interview HR</th><td>" . htmlspecialchars($row["form_interview_hr"]) . "</td></tr>";
+      echo "<tr><th>Foto Ijazah</th><td>" . htmlspecialchars($row["foto_ijazah"]) . "</td></tr>";
+      echo "<tr><th>Form Hasil Psikotest</th><td>" . htmlspecialchars($row["form_hasil_psikotest"]) . "</td></tr>";
+      echo "<tr><th>Foto Transkip Nilai</th><td>" . htmlspecialchars($row["foto_transkip_nilai"]) . "</td></tr>";
       echo "</table>";
       echo "</div>";
-
       echo "<div class='col-md-6'>";
       echo "<table class='table' style='margin-top: -40px'>";
-      echo "<tr>";
-      echo "<th>Foto Buku Tabungan</th>";
-      echo "<td>" . $row["foto_buku_tabungan"] . "</td>";
-      echo "</tr>";
-      echo "<tr>";
-      echo "<th>Form Hasil Tes Kesehatan</th>";
-      echo "<td>" . $row["form_hasil_tes_kesehatan"] . "</td>";
-      echo "</tr>";
-      echo "<tr>";
-      echo "<th>Foto NPWP</th>";
-      echo "<td>" . $row["foto_npwp"] . "</td>";
-      echo "</tr>";
-      echo "<tr>";
-      echo "<th>Referensi Kerja</th>";
-      echo "<td>" . $row["referensi_kerja"] . "</td>";
-      echo "</tr>";
-      echo "<tr>";
-      echo "<th>Foto KK</th>";
-      echo "<td>" . $row["foto_kk"] . "</td>";
-      echo "</tr>";
-      echo "<tr>";
-      echo "<th>Foto Sertifikat</th>";
-      echo "<td>" . $row["foto_sertifikat"] . "</td>";
-      echo "</tr>";
-      echo "<tr>";
-      echo "<th>BPJS Ketenagakerjaan</th>";
-      echo "<td>" . $row["bpjs_ketenagakerjaan"] . "</td>";
-      echo "</tr>";
-      echo "<tr>";
-      echo "<th>BPJS Jaminan Pensiun</th>";
-      echo "<td>" . $row["bpjs_jaminan_pensiun"] . "</td>";
-      echo "</tr>";
-      echo "<tr>";
-      echo "<th>BPJS Kesehatan</th>";
-      echo "<td>" . $row["bpjs_kesehatan"] . "</td>";
-      echo "</tr>";
+      echo "<tr><th>Form Confirmation Letter</th><td>" . htmlspecialchars($row["form_confirmation_letter"]) . "</td></tr>";
+      echo "<tr><th>Foto Buku tabungan</th><td>" . htmlspecialchars($row["foto_buku_tabungan"]) . "</td></tr>";
+      echo "<tr><th>Form Hasil Tes Kesehatan</th><td>" . htmlspecialchars($row["form_hasil_tes_kesehatan"]) . "</td></tr>";
+      echo "<tr><th>Foto NPWP</th><td>" . htmlspecialchars($row["foto_npwp"]) . "</td></tr>";
+      echo "<tr><th>Form Referensi Kerja</th><td>" . htmlspecialchars($row["referensi_kerja"]) . "</td></tr>";
+      echo "<tr><th>Foto Kartu Keluarga</th><td>" . htmlspecialchars($row["foto_kk"]) . "</td></tr>";
+      echo "<tr><th>Foto Sertifikat</th><td>" . htmlspecialchars($row["foto_sertifikat"]) . "</td></tr>";
+      echo "<tr><th>BPJS Ketenagakerjaan</th><td>" . htmlspecialchars($row["bpjs_ketenagakerjaan"]) . "</td></tr>";
+      echo "<tr><th>BPJS Jaminan Pensiun</th><td>" . htmlspecialchars($row["bpjs_jaminan_pensiun"]) . "</td></tr>";
+      echo "<tr><th>BPJS Kesehatan</th><td>" . htmlspecialchars($row["bpjs_kesehatan"]) . "</td></tr>";
       echo "</table>";
+      echo "</div>";
       echo "</div>";
       echo "</div>";
       echo "<div class='modal-footer'>";
-      echo "<button type='button' class='btn btn-danger reject-btn' data-id='" . $row["fpk_selection"] . "'>Reject <svg xmlns='http://www.w3.org/2000/svg' width='1.2em' height='1.2em' viewBox='0 0 36 36'>
+      echo "<button type='button' class='btn btn-danger reject-btn' data-id='" . $modalId . "'>Reject <svg xmlns='http://www.w3.org/2000/svg' width='1.2em' height='1.2em' viewBox='0 0 36 36'>
         <rect width='36' height='36' fill='none' />
         <path fill='currentColor' d='M24.879 2.879A3 3 0 1 1 29.12 7.12l-8.79 8.79a.125.125 0 0 0 0 .177l8.79 8.79a3 3 0 1 1-4.242 4.243l-8.79-8.79a.125.125 0 0 0-.177 0l-8.79 8.79a3 3 0 1 1-4.243-4.242l8.79-8.79a.125.125 0 0 0 0-.177l-8.79-8.79A3 3 0 0 1 7.12 2.878l8.79 8.79a.125.125 0 0 0 .177 0z' />
     </svg></button>";
       // Menambahkan tombol Reject
-      // Menambahkan tombol Reject
-      echo "<button type='button' class='btn btn-primary approve-btn' data-id='" . $row["fpk_selection"] . "' data-persetujuanatasan='" . $row["persetujuanAtasan"] . "'>Approve <svg xmlns='http://www.w3.org/2000/svg' width='1.2em' height='1.2em' viewBox='0 0 24 24'>
+      echo "<button type='button' class='btn btn-primary approve-btn' data-id='" . $modalId . "' data-persetujuansuperadmin='" . $row["persetujuanSuperadmin"] . "'>Approve <svg xmlns='http://www.w3.org/2000/svg' width='1.2em' height='1.2em' viewBox='0 0 24 24'>
         <rect width='24' height='24' fill='none' />
         <g fill='none' fill-rule='evenodd'>
             <path d='M24 0v24H0V0zM12.593 23.258l-.011.002l-.071.035l-.02.004l-.014-.004l-.071-.035c-.01-.004-.019-.001-.024.005l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427c-.002-.01-.009-.017-.017-.018m.265-.113l-.013.002l-.185.093l-.01.01l-.003.011l.018.43l.005.012l.008.007l.201.093c.012.004.023 0 .029-.008l.004-.014l-.034-.614c-.003-.012-.01-.02-.02-.022m-.715.002a.023.023 0 0 0-.027.006l-.006.014l-.034.614c0 .012.007.02.017.024l.015-.002l.201-.093l.01-.008l.004-.011l.017-.43l-.003-.012l-.01-.01z' />
@@ -523,34 +403,6 @@ $connection->close();
           // Simpan nilai persetujuanAdmin dari tombol
           var persetujuanAtasan = button.data('persetujuanatasan');
 
-          // Jika persetujuan HR Unit disetujui, tambahkan tanggal hari ini ke field tglAdmin
-          // if (persetujuanAdmin === 'Disetujui') {
-          //   // Mendapatkan tanggal hari ini
-          //   var today = new Date();
-          //   var year = today.getFullYear();
-          //   var month = String(today.getMonth() + 1).padStart(2, '0');
-          //   var day = String(today.getDate()).padStart(2, '0');
-          //   var tanggalAdmin = year + '-' + month + '-' + day;
-
-          //   // Lakukan permintaan AJAX untuk menyimpan tanggalAdmin
-          //   $.ajax({
-          //     url: 'simpan_tanggal_admin.php',
-          //     method: 'POST',
-          //     data: {
-          //       id: id,
-          //       tanggalAdmin: tanggalAdmin
-          //     },
-          //     success: function(response) {
-          //       // Tampilkan alert ketika tanggalAdmin berhasil disimpan
-          //       alert('Tanggal berhasil disimpan.');
-          //     },
-          //     error: function(xhr, status, error) {
-          //       // Tangani error jika terjadi saat menyimpan tanggalAdmin
-          //       console.error(xhr.responseText);
-          //       alert('Terjadi kesalahan saat menyimpan tanggal.');
-          //     }
-          //   });
-          // }
         },
         error: function(xhr, status, error) {
           // Tangani error jika terjadi
@@ -559,81 +411,12 @@ $connection->close();
         }
       });
     });
+
+    // Menambahkan event listener untuk modal yang menutup
+    $(document).on('hidden.bs.modal', '.modal', function() {
+      location.reload(); // Reload halaman ketika modal ditutup
+    });
   </script>
 </body>
 
 </html>
-<!-- <th>ID Candidates</th> -->
-<!-- <th>Golongan</th> -->
-<!-- <th>Form Tanggal Lengkap</th> -->
-<!-- <th>Branch</th> -->
-<!-- <th>No KTP</th> -->
-<!-- <th>Jabatan</th> -->
-<!-- <th>Pendidikan</th> -->
-<!-- <th>Organisasi</th> -->
-<!-- <th>Alasan Penerimaan</th> -->
-<!-- <th>Gaji Pokok</th> -->
-<!-- <th>Tunjangan Makan</th> -->
-<!-- <th>Tunjangan Transport</th> -->
-<!-- <th>Tunjangan Kendaraan</th> -->
-<!-- <th>BPJS JHT</th> -->
-<!-- <th>BPJS JP</th> -->
-<!-- <th>BPJS Kesehatan</th> -->
-<!-- <th>Koperasi Karyawan</th> -->
-<!-- <th>Form Aplikasi</th> -->
-<!-- <th>Pas Foto</th> -->
-<!-- <th>Form Interview User</th> -->
-<!-- <th>Foto KTP</th> -->
-<!-- <th>Form Interview HR</th> -->
-<!-- <th>Foto Ijazah</th> -->
-<!-- <th>Form Hasil Psikotest</th> -->
-<!-- <th>Foto Transkip Nilai</th> -->
-<!-- <th>Form Confirmation Letter</th> -->
-<!-- <th>Foto Buku Tabungan</th> -->
-<!-- <th>Form Hasil Tes Kesehatan</th> -->
-<!-- <th>Foto NPWP</th> -->
-<!-- <th>Referensi Kerja</th> -->
-<!-- <th>Foto KK</th> -->
-<!-- <th>Foto Sertifikat</th> -->
-<!-- <th>BPJS Ketenagakerjaan</th> -->
-<!-- <th>BPJS Jaminan Pensiun</th> -->
-<!-- <th>Created At</th> -->
-<!-- <th>Updated At</th> -->
-<?php
-// echo "<td>" . $row["id_candidates"] . "</td>";
-// echo "<td>" . $row["golongan"] . "</td>";
-// echo "<td>" . $row["form_tanggal_lengkap"] . "</td>";
-// echo "<td>" . $row["branch"] . "</td>";
-// echo "<td>" . $row["no_ktp"] . "</td>";
-// echo "<td>" . $row["jabatan"] . "</td>";
-// echo "<td>" . $row["pendidikan"] . "</td>";
-// echo "<td>" . $row["organisasi"] . "</td>";
-// echo "<td>" . $row["alasan_penerimaan"] . "</td>";
-// echo "<td>" . $row["gaji_pokok"] . "</td>";
-// echo "<td>" . $row["tunjangan_makan"] . "</td>";
-// echo "<td>" . $row["tunjangan_transport"] . "</td>";
-// echo "<td>" . $row["tunjangan_kendaraan"] . "</td>";
-// echo "<td>" . $row["bpjs_jht"] . "</td>";
-// echo "<td>" . $row["bpjs_jp"] . "</td>";
-// echo "<td>" . $row["bpjs_kesehatan"] . "</td>";
-// echo "<td>" . $row["koperasi_karyawan"] . "</td>";
-// echo "<td>" . $row["form_aplikasi"] . "</td>";
-// echo "<td>" . $row["pas_foto"] . "</td>";
-// echo "<td>" . $row["form_interview_user"] . "</td>";
-// echo "<td>" . $row["foto_ktp"] . "</td>";
-// echo "<td>" . $row["form_interview_hr"] . "</td>";
-// echo "<td>" . $row["foto_ijazah"] . "</td>";
-// echo "<td>" . $row["form_hasil_psikotest"] . "</td>";
-// echo "<td>" . $row["foto_transkip_nilai"] . "</td>";
-// echo "<td>" . $row["form_confirmation_letter"] . "</td>";
-// echo "<td>" . $row["foto_buku_tabungan"] . "</td>";
-// echo "<td>" . $row["form_hasil_tes_kesehatan"] . "</td>";
-// echo "<td>" . $row["foto_npwp"] . "</td>";
-// echo "<td>" . $row["referensi_kerja"] . "</td>";
-// echo "<td>" . $row["foto_kk"] . "</td>";
-// echo "<td>" . $row["foto_sertifikat"] . "</td>";
-// echo "<td>" . $row["bpjs_ketenagakerjaan"] . "</td>";
-// echo "<td>" . $row["bpjs_jaminan_pensiun"] . "</td>";
-// echo "<td>" . $row["created_at"] . "</td>";
-// echo "<td>" . $row["updated_at"] . "</td>";
-?>

@@ -645,7 +645,7 @@ if ($kodeFPK !== null) {
 </head>
 
 <body>
-    <a href="detail_applicants.php?id=<?php echo $userId; ?>&branches=<?php echo $branches; ?>&posisi=<?php echo $posisi; ?>&KodeFPK=<?php echo $kodeFPK; ?>" class="top-left-button">
+    <a href="detail_accept.php?id=<?php echo $userId; ?>&branches=<?php echo $branches; ?>&posisi=<?php echo $posisi; ?>&KodeFPK=<?php echo $kodeFPK; ?>" class="top-left-button">
         <img src="../img/left-arrow.png " alt="" style="width: 40px; height: 40px; margin: 15px 15px;">
     </a>
     <div class="container">

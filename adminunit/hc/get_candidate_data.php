@@ -41,7 +41,7 @@ if (isset($_POST['id_candidates'])) {
             b.fc_kk AS fc_kk,
             b.fc_sp AS fc_sp,
             b.foto AS foto,
-            f.requestFor AS request_for,
+            f.requestType AS request_for,
             h.file_interview_user AS file_interview_user,
             h.file_interview_hr AS file_interview_hr, 
             h.file_hasil_psikotest AS file_hasil_psikotest, 
@@ -56,7 +56,7 @@ if (isset($_POST['id_candidates'])) {
         LEFT JOIN 
             hcc h ON a.id_candidates = h.id_candidates AND h.fpk_selection = f.kodeFPK
         WHERE
-            a.id_candidates = ?
+            a.id_candidates = ? AND a.level_candidates = 6
     ";
 
   $stmt = $conn->prepare($sql);
@@ -108,10 +108,10 @@ if (isset($_POST['id_candidates'])) {
       $row['file_interview_user'] = null;
     }
 
+    // Kirim data kandidat yang ditemukan
     echo json_encode($row);
-  } else {
-    echo json_encode(["error" => "No data found"]);
   }
+  // Jika tidak ada kandidat dengan level_candidates = 6, tidak ada data yang dikirim (tidak ada respons)
 
   $stmt->close();
 }

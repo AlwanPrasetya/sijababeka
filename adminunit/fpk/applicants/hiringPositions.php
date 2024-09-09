@@ -1,8 +1,8 @@
 <?php
 include('koneksi.php');
+
 // Periksa apakah ada parameter 'id' dalam URL
 if (isset($_GET['id'])) {
-    // Ambil nilai ID dari URL
     $userId = $_GET['id'];
 
     // Lakukan kueri ke database untuk mendapatkan data pengguna berdasarkan ID
@@ -10,52 +10,56 @@ if (isset($_GET['id'])) {
     $result = $connection->query($query);
 
     if ($result->num_rows > 0) {
-        // Menginisialisasi array untuk menyimpan nama cabang
         $branchNames = array();
 
-        // Output data dari setiap baris
         while ($row = $result->fetch_assoc()) {
             $nama = $row["nama"];
-            // echo "<h4>SELAMAT DATANG, <strong> $nama </strong> - <strong> HR UNIT </strong></h4>";
 
-            // Lakukan kueri ke database untuk mendapatkan cabang dengan nama yang sama
+            // Kueri untuk mendapatkan cabang dengan nama yang sama
             $queryBranches = "SELECT DISTINCT branch FROM multi_user WHERE nama = '$nama'";
             $resultBranches = $connection->query($queryBranches);
 
             if ($resultBranches->num_rows > 0) {
-                // echo "<ul class='branch-list'>"; // Mulai daftar untuk mencetak cabang-cabang
                 while ($rowBranch = $resultBranches->fetch_assoc()) {
-                    // Tambahkan nama cabang ke array
                     $branchNames[] = $rowBranch["branch"];
-                    // Cetak nama cabang dalam daftar
-                    // echo "<li><strong>" . $rowBranch["branch"] . "</strong></li>";
                 }
-                // echo "</ul>"; // Akhiri daftar
-            } else {
-                // echo "<h4><strong> Tidak ada cabang dengan nama yang sama. </strong></h4>";
             }
         }
 
-
-        // Gabungkan nama cabang menjadi satu string dengan format yang diinginkan
         $branches = implode(', ', $branchNames);
     } else {
         echo "Data tidak ditemukan.";
     }
 } else {
-    // Jika parameter 'id' tidak ada dalam URL, tampilkan pesan kesalahan
     echo "Parameter 'id' tidak ditemukan dalam URL.";
 }
 
 // Tutup koneksi database
 $connection->close();
 ?>
+
 <?php
 include('koneksi.php');
 
-$query = "SELECT * from hiring_positions";
+// Kueri untuk mendapatkan hiring positions dan menghitung jumlah nilai level_candidates untuk setiap tahap
+$query = "
+    SELECT 
+        hp.kodeFPK,
+        hp.posisi,
+        COUNT(CASE WHEN a.level_candidates = 0 THEN 1 END) AS applicants,
+        COUNT(CASE WHEN a.level_candidates = 1 THEN 1 END) AS interview_hr,
+        COUNT(CASE WHEN a.level_candidates = 2 THEN 1 END) AS interview_user,
+        COUNT(CASE WHEN a.level_candidates = 3 THEN 1 END) AS psikotes,
+        COUNT(CASE WHEN a.level_candidates = 4 THEN 1 END) AS mcu,
+        COUNT(CASE WHEN a.level_candidates = 5 THEN 1 END) AS offer,
+        COUNT(CASE WHEN a.level_candidates = 6 THEN 1 END) AS accept
+    FROM hiring_positions hp
+    LEFT JOIN applicants a ON hp.kodeFPK = a.kodeFPK
+    GROUP BY hp.kodeFPK, hp.posisi
+";
 $result = mysqli_query($connection, $query);
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -65,7 +69,6 @@ $result = mysqli_query($connection, $query);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Data Hiring Positions</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="//cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
     <style>
         body {
@@ -102,6 +105,16 @@ $result = mysqli_query($connection, $query);
             border-radius: 4px;
             text-align: center;
             font-weight: bold;
+            width: 60px;
+            margin: 0 auto;
+            /* Center the div horizontally */
+        }
+
+        .app a {
+            color: white !important;
+            font-weight: bold !important;
+            display: block;
+            /* Ensure the link occupies the full width of the .app div */
         }
 
         .white-bold-text {
@@ -132,34 +145,35 @@ $result = mysqli_query($connection, $query);
                                         <tr>
                                             <th>Posisi</th>
                                             <th>Applicants</th>
-                                            <!-- <th>Candidates</th> -->
                                             <th>Interview HR</th>
                                             <th>Interview User</th>
                                             <th>Psikotes</th>
                                             <th>MCU</th>
                                             <th>Offer</th>
                                             <th>Accept</th>
-                                            <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <?php
-                                        
                                         while ($row = mysqli_fetch_assoc($result)) {
                                             echo "<tr>";
                                             echo "<td>" . $row['kodeFPK'] . " - " . $row['posisi'] . "</td>";
-                                            echo "<td><div class='app'><a href='detail_applicants.php?id=" . $userId ."&branches=" . $branches  . "&posisi=" . $row['posisi']. "&KodeFPK=" . $row['kodeFPK'] . "' style='color: white !important; font-weight: bold !important;'>" . $row['applicants'] . "</a></div></td>";
-                                            echo "<td>" . $row['kandidat'] . "</td>";
-                                            echo "<td>" . $row['interviewHr'] . "</td>";
-                                            echo "<td>" . $row['interviewUser'] . "</td>";
-                                            echo "<td>" . $row['psikotes'] . "</td>";
-                                            echo "<td>" . $row['offer'] . "</td>";
-                                            echo "<td>" . $row['accept'] . "</td>";
-                                            echo "<td>" . $row['accept'] . "</td>";
+                                            echo "<td>
+                <div class='app'>
+                    <a href='detail_applicants.php?id=" . $userId . "&branches=" . $branches  . "&posisi=" . $row['posisi'] . "&KodeFPK=" . $row['kodeFPK'] . "'>" . $row['applicants'] . "</a>
+                </div>
+            </td>";
+                                            echo "<td><div class='app'><a href='detail_interview_hr.php?id=" . $userId . "&branches=" . $branches  . "&posisi=" . $row['posisi'] . "&KodeFPK=" . $row['kodeFPK'] . "'>" . $row['interview_hr'] . "</a></div></td>";
+                                            echo "<td><div class='app'><a href='detail_interview_user.php?id=" . $userId . "&branches=" . $branches  . "&posisi=" . $row['posisi'] . "&KodeFPK=" . $row['kodeFPK'] . "'>" . $row['interview_user'] . "</a></div></td>";
+                                            echo "<td><div class='app'><a href='detail_psikotest.php?id=" . $userId . "&branches=" . $branches  . "&posisi=" . $row['posisi'] . "&KodeFPK=" . $row['kodeFPK'] . "'>" . $row['psikotes'] . "</a></div></td>";
+                                            echo "<td><div class='app'><a href='detail_mcu.php?id=" . $userId . "&branches=" . $branches  . "&posisi=" . $row['posisi'] . "&KodeFPK=" . $row['kodeFPK'] . "'>" . $row['mcu'] . "</a></div></td>";
+                                            echo "<td><div class='app'><a href='detail_offer.php?id=" . $userId . "&branches=" . $branches  . "&posisi=" . $row['posisi'] . "&KodeFPK=" . $row['kodeFPK'] . "'>" . $row['offer'] . "</a></div></td>";
+                                            echo "<td><div class='app'><a href='detail_accept.php?id=" . $userId . "&branches=" . $branches  . "&posisi=" . $row['posisi'] . "&KodeFPK=" . $row['kodeFPK'] . "'>" . $row['accept'] . "</a></div></td>";
                                             echo "</tr>";
                                         }
                                         ?>
                                     </tbody>
+
                                 </table>
                             </div>
                         </div>
@@ -176,10 +190,6 @@ $result = mysqli_query($connection, $query);
 <script>
     $(document).ready(function() {
         $('#myTable').DataTable();
-    });
-
-    $('#toggler').click(function() {
-        $('#sidebar').toggleClass('active');
     });
 </script>
 

@@ -79,7 +79,7 @@ if (isset($_GET['id'])) {
 
     if ($result->num_rows > 0) {
         // Menginisialisasi array untuk menyimpan nama cabang
-        $branchNames = array();
+        $namaUnitNames = array();
 
         // Output data dari setiap baris
         while ($row = $result->fetch_assoc()) {
@@ -87,16 +87,16 @@ if (isset($_GET['id'])) {
             // echo "<h4>SELAMAT DATANG, <strong> $nama </strong> - <strong> HR UNIT </strong></h4>";
 
             // Lakukan kueri ke database untuk mendapatkan cabang dengan nama yang sama
-            $queryBranches = "SELECT DISTINCT branch FROM multi_user WHERE nama = '$nama'";
-            $resultBranches = $connection->query($queryBranches);
+            $querynamaUnites = "SELECT DISTINCT branch FROM multi_user WHERE nama = '$nama'";
+            $resultnamaUnites = $connection->query($querynamaUnites);
 
-            if ($resultBranches->num_rows > 0) {
-                // echo "<ul class='branch-list'>"; // Mulai daftar untuk mencetak cabang-cabang
-                while ($rowBranch = $resultBranches->fetch_assoc()) {
+            if ($resultnamaUnites->num_rows > 0) {
+                // echo "<ul class='namaUnit-list'>"; // Mulai daftar untuk mencetak cabang-cabang
+                while ($rownamaUnit = $resultnamaUnites->fetch_assoc()) {
                     // Tambahkan nama cabang ke array
-                    $branchNames[] = $rowBranch["branch"];
+                    $namaUnitNames[] = $rownamaUnit["branch"];
                     // Cetak nama cabang dalam daftar
-                    // echo "<li><strong>" . $rowBranch["branch"] . "</strong></li>";
+                    // echo "<li><strong>" . $rownamaUnit["namaUnit"] . "</strong></li>";
                 }
                 // echo "</ul>"; // Akhiri daftar
             } else {
@@ -106,7 +106,7 @@ if (isset($_GET['id'])) {
 
 
         // Gabungkan nama cabang menjadi satu string dengan format yang diinginkan
-        $branches = implode(', ', $branchNames);
+        $namaUnites = implode(', ', $namaUnitNames);
     } else {
         echo "Data tidak ditemukan.";
     }
@@ -360,7 +360,7 @@ $connection->close();
                     success: function(response) {
                         const data = JSON.parse(response);
                         $('#golongan').val(data.golongan);
-                        $('#branch').val(data.branch);
+                        $('#namaUnit').val(data.namaUnit);
                         $('#jabatan').val(data.jabatan);
                         $('#organisasi').val(data.organisasi);
                     }
@@ -513,11 +513,11 @@ $connection->close();
 
         function setBpjsKs(value) {
             if (value !== null && value !== '') {
-                $('#bpjs_ks_lengkap').prop('checked', true);
-                $('#bpjs_ks_tidak_lengkap').prop('checked', false);
+                $('#bpjs_kesehatan_lengkap').prop('checked', true);
+                $('#bpjs_kesehatan_tidak_lengkap').prop('checked', false);
             } else {
-                $('#bpjs_ks_lengkap').prop('checked', false);
-                $('#bpjs_ks_tidak_lengkap').prop('checked', true);
+                $('#bpjs_kesehatan_lengkap').prop('checked', false);
+                $('#bpjs_kesehatan_tidak_lengkap').prop('checked', true);
             }
 
             // Set form completeness based on form_interview_user value
@@ -786,7 +786,7 @@ $connection->close();
 <body>
     <div class="container">
 
-        <a href="data_hc.php?id=<?php echo $userId; ?>&branches=<?php echo $branches; ?>" class="database">
+        <a href="data_hc.php?id=<?php echo $userId; ?>&namaUnites=<?php echo $namaUnites; ?>" class="database">
             <img src="./img/database (1).png" alt="database" style="width: 40px; height: 40px; margin: 15px 15px;"></a>
 
         <a href="../index.php?id=<?php echo $userId; ?>" class="dashboard">
@@ -914,12 +914,51 @@ $connection->close();
                             <td style="width: 45%; vertical-align: middle; height: 5px; padding-right: 20px;">
                                 <div class="table-cell">
                                     <label for="fpk_selection" style="width: 250px;">FPK No</label>
+                                    <?php
+                                    // Database connection
+                                    $servername = "localhost";
+                                    $username = "alwan";
+                                    $password = "root";
+                                    $dbname = "db_sijababeka";
+
+                                    $conn = new mysqli($servername, $username, $password, $dbname);
+
+                                    if ($conn->connect_error) {
+                                        die("Connection failed: " . $conn->connect_error);
+                                    }
+
+                                    // Query untuk mengambil kode FPK hanya jika level_candidates = 6
+                                    $sql = "
+    SELECT 
+        f.kodeFPK 
+    FROM 
+        fpk f
+    JOIN 
+        applicants a ON f.kodeFPK = a.kodeFPK
+    WHERE 
+        a.level_candidates = 6
+";
+
+                                    $result = $conn->query($sql);
+                                    $fpk_data = [];
+
+                                    if ($result->num_rows > 0) {
+                                        while ($row = $result->fetch_assoc()) {
+                                            $fpk_data[] = $row;
+                                        }
+                                    }
+
+                                    $conn->close();
+                                    ?>
+
+                                    <!-- HTML Part -->
                                     <select id="fpk_selection" name="fpk_selection" onchange="fillForm()" style="width: 88%; vertical-align: middle; margin-bottom: 0px;" required>
                                         <option value="">Pilih Kode FPK</option>
-                                        <?php foreach ($fpk_data as $index => $fpk) : ?>
+                                        <?php foreach ($fpk_data as $fpk) : ?>
                                             <option value="<?php echo $fpk['kodeFPK']; ?>"><?php echo $fpk['kodeFPK']; ?></option>
                                         <?php endforeach; ?>
                                     </select>
+
                                 </div>
                             </td>
                             <td style="width: 45%; vertical-align: middle; height: 5px;">
@@ -968,9 +1007,9 @@ $connection->close();
                         <tr class="table-container">
                             <td style="width: 45%; vertical-align: middle; height: 5px; padding-right: 20px;">
                                 <div class="table-cell">
-                                    <label for="branch" style="width: 250px;">Unit Bisnis</label>
+                                    <label for="namaUnit" style="width: 250px;">Unit Bisnis</label>
                                     <div style="margin-bottom: -10px; display: flex; align-items: center; width: 90%;">
-                                        <input type="text" id="branch" name="branch" placeholder="Unit Bisnis" required>
+                                        <input type="text" id="namaUnit" name="namaUnit" placeholder="Unit Bisnis" required>
                                     </div>
                                 </div>
                             </td>
@@ -1545,16 +1584,16 @@ $connection->close();
                                 <div class="table-cell">
                                     <label style="width: 250px;">BPJS Kesehatan</label>
                                     <div style="border: 1px solid #ccc; padding: 2px; display: flex; align-items: center; width: 90%;">
-                                        <label for="bpjs_ks_lengkap" style="margin-right: 10px;">
-                                            <input type="radio" id="bpjs_ks_lengkap" name="bpjs_ks" value="Lengkap" required>
+                                        <label for="bpjs_kesehatan_lengkap" style="margin-right: 10px;">
+                                            <input type="radio" id="bpjs_kesehatan_lengkap" name="bpjs_kesehatan" value="Lengkap" required>
                                             Lengkap
                                         </label>
                                         <label for="bpjs_ks_tidak_lengkap" style="margin-right: 10px;">
-                                            <input type="radio" id="bpjs_ks_tidak_lengkap" name="bpjs_ks" value="Tidak Lengkap" required>
+                                            <input type="radio" id="bpjs_kesehatan_tidak_lengkap" name="bpjs_kesehatan" value="Tidak Lengkap" required>
                                             Tidak Lengkap
                                         </label>
                                         <div class="radio-label">
-                                            <a href="javascript:void(0);" id="bpjs_ks_verifikasi" name="bpjs_ks_verifikasi" onclick="redirectToPage()" style="text-decoration: none; color: blue;">
+                                            <a href="javascript:void(0);" id="bpjs_kesehatan_verifikasi" name="bpjs_kesehatan_verifikasi" onclick="redirectToPage()" style="text-decoration: none; color: blue;">
                                                 Verifikasi
                                             </a>
                                         </div>

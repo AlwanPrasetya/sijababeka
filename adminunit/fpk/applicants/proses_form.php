@@ -55,12 +55,43 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           $queryHcc = "INSERT INTO hcc (fpk_selection, id_candidates, nama_kandidat, id_biodata) VALUES ('$kodeFPK', '$id_candidates', '$nama', '$lastInsertId')";
 
           if ($connection->query($queryHcc) === TRUE) {
-            // Jika penyimpanan di tabel hcc berhasil, tampilkan pesan berhasil menggunakan JavaScript alert
-            echo "<script>alert('Data berhasil disimpan ke database.');</script>";
-            // Kembali ke halaman sebelumnya
-            echo "<script>window.location.replace(document.referrer);</script>";
-            // Reload halaman setelah kembali
-            echo "<script>location.reload();</script>";
+            // Jika penyimpanan di tabel hcc berhasil, tambahkan penyimpanan ke tabel persetujuan_hc
+            $queryPersetujuanHc = "INSERT INTO persetujuan_hc (fpk_selection) VALUES ('$kodeFPK')";
+
+            if ($connection->query($queryPersetujuanHc) === TRUE) {
+              // Jika penyimpanan di tabel persetujuan_hc berhasil, perbarui jumlah pelamar
+              $queryGetApplicantsCount = "SELECT applicants FROM hiring_positions WHERE kodeFPK = '$kodeFPK'";
+              $resultGetApplicantsCount = $connection->query($queryGetApplicantsCount);
+
+              if ($resultGetApplicantsCount) {
+                // Ambil jumlah pelamar saat ini
+                $row = $resultGetApplicantsCount->fetch_assoc();
+                $currentApplicantsCount = $row['applicants'];
+                $newApplicantsCount = $currentApplicantsCount + 1;
+
+                // Buat query untuk memperbarui jumlah pelamar di tabel hiring_positions
+                $queryUpdateApplicantsCount = "UPDATE hiring_positions SET applicants = $newApplicantsCount WHERE kodeFPK = '$kodeFPK'";
+
+                // Jalankan query untuk memperbarui jumlah pelamar
+                if ($connection->query($queryUpdateApplicantsCount) === TRUE) {
+                  // Jika berhasil, tampilkan pesan berhasil
+                  echo "<script>alert('Data berhasil disimpan ke database.');</script>";
+                  // Kembali ke halaman sebelumnya
+                  echo "<script>window.location.replace(document.referrer);</script>";
+                  // Reload halaman setelah kembali
+                  echo "<script>location.reload();</script>";
+                } else {
+                  // Jika gagal, tampilkan pesan error
+                  echo "Error updating applicants count: " . $connection->error;
+                }
+              } else {
+                // Jika query untuk mendapatkan jumlah pelamar gagal, tampilkan pesan error
+                echo "Error fetching applicants count: " . $connection->error;
+              }
+            } else {
+              // Jika ada kesalahan saat menyimpan ke tabel persetujuan_hc, tampilkan pesan error
+              echo "Error: " . $queryPersetujuanHc . "<br>" . $connection->error;
+            }
           } else {
             // Jika ada kesalahan saat menyimpan ke tabel hcc, tampilkan pesan error
             echo "Error: " . $queryHcc . "<br>" . $connection->error;
@@ -76,40 +107,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } else {
       // Jika ada kesalahan saat menyimpan ke tabel applicants, tampilkan pesan error
       echo "Error: " . $queryApplicants . "<br>" . $connection->error;
-    }
-
-    // Buat query untuk mengambil jumlah pelamar saat ini dari tabel hiring_positions
-    $queryGetApplicantsCount = "SELECT applicants FROM hiring_positions WHERE kodeFPK = '$kodeFPK'";
-
-    // Jalankan query
-    $resultGetApplicantsCount = $connection->query($queryGetApplicantsCount);
-
-    if ($resultGetApplicantsCount) {
-      // Ambil jumlah pelamar saat ini
-      $row = $resultGetApplicantsCount->fetch_assoc();
-      $currentApplicantsCount = $row['applicants'];
-
-      // Tambahkan 1 ke jumlah pelamar
-      $newApplicantsCount = $currentApplicantsCount + 1;
-
-      // Buat query untuk memperbarui jumlah pelamar di tabel hiring_positions
-      $queryUpdateApplicantsCount = "UPDATE hiring_positions SET applicants = $newApplicantsCount WHERE kodeFPK = '$kodeFPK'";
-
-      // Jalankan query untuk memperbarui jumlah pelamar
-      if ($connection->query($queryUpdateApplicantsCount) === TRUE) {
-        // Jika berhasil, tampilkan pesan berhasil
-        echo "<script>alert('Data berhasil disimpan ke database.');</script>";
-        // Kembali ke halaman sebelumnya
-        echo "<script>window.location.replace(document.referrer);</script>";
-        // Reload halaman setelah kembali
-        echo "<script>location.reload();</script>";
-      } else {
-        // Jika gagal, tampilkan pesan error
-        echo "Error updating applicants count: " . $connection->error;
-      }
-    } else {
-      // Jika query untuk mendapatkan jumlah pelamar gagal, tampilkan pesan error
-      echo "Error fetching applicants count: " . $connection->error;
     }
 
     // Tutup koneksi

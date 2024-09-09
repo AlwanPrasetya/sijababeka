@@ -3,7 +3,7 @@ include('koneksi.php');
 // Periksa apakah ada parameter 'id' dalam URL
 if (isset($_GET['id'])) {
     // Ambil nilai ID dari URL
-    $userId = $_GET['id'];  
+    $userId = $_GET['id'];
     $posisi = $_GET['posisi'];
 
     // Lakukan kueri ke database untuk mendapatkan data pengguna berdasarkan ID
@@ -104,7 +104,7 @@ $connection->close();
 <?php
 include('koneksi.php');
 
-$query = "SELECT * from applicants";
+$query = "SELECT * FROM applicants WHERE level_candidates = 0";
 $result = mysqli_query($connection, $query);
 ?>
 <?php
@@ -305,7 +305,7 @@ if ($kodeFPK !== null) {
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header" style="background-color: #008F4D; color: white; display: flex; align-items: center; padding: 10px;">
-                            <div class="title" style="padding: 5px; margin-right: 10px;">TABEL VACANT POSITIONS</div>
+                            <div class="title" style="padding: 5px; margin-right: 10px;">DATA APPLICANTS</div>
                             <div class="posisi" style="background-color: #006F3D; padding: 5px;"><?php echo $posisi; ?></div>
                         </div>
                         <div class="card-body">
@@ -328,12 +328,56 @@ if ($kodeFPK !== null) {
                                                 echo "<td><a href='candidates.php?id_biodata=" . $row['id'] . "&id=" . $userId . "&branches=" . $branches . "&posisi=" . $posisi . "&KodeFPK=" . $kodeFPK . "' style='color: darkgreen; font-weight: bold;'>" . $row['nama'] . "</a></td>";
                                                 echo "<td>" . $row['email'] . "</td>";
                                                 echo "<td>" . $row['wa'] . "</td>";
-                                                echo "<td>" . $row['tglLahir'] . "</td>";
+                                                echo "<td>
+            <form action='move_candidate.php' method='POST' style='display:inline;'>
+                <input type='hidden' name='id' value='" . $row['id'] . "' />
+                <button type='submit' name='moveCandidate' class='btn-move'>Move</button>
+            </form>
+        </td>";
                                                 echo "</tr>";
                                             }
                                         }
                                         ?>
                                     </tbody>
+                                    <style>
+                                        /* Gaya untuk tombol "Move to" */
+                                        button {
+                                            background-color: #4CAF50;
+                                            /* Warna latar belakang hijau */
+                                            color: white;
+                                            /* Warna teks putih */
+                                            padding: 5px 10px;
+                                            /* Padding dalam tombol */
+                                            text-align: center;
+                                            /* Perataan teks */
+                                            text-decoration: none;
+                                            /* Menghilangkan garis bawah */
+                                            display: inline-block;
+                                            /* Membuat tombol inline-block */
+                                            font-size: 14px;
+                                            /* Ukuran font */
+                                            margin: 2px 2px;
+                                            /* Margin sekitar tombol */
+                                            cursor: pointer;
+                                            /* Mengubah kursor saat dihover */
+                                            border: none;
+                                            /* Menghilangkan border */
+                                            border-radius: 5px;
+                                            /* Membuat ujung tombol melengkung */
+                                            /* transition-duration: 0.2s; */
+                                            /* Transisi untuk efek hover */
+                                        }
+
+                                        /* Efek hover untuk tombol */
+                                        button:hover {
+                                            /* background-color: white; */
+                                            /* Warna latar belakang saat dihover */
+                                            color: black;
+                                            /* Warna teks saat dihover */
+                                            border: 1px solid #4CAF50;
+                                            /* Menambahkan border hijau saat dihover */
+                                        }
+                                    </style>
 
                                 </table>
                             </div>

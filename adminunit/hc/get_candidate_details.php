@@ -24,7 +24,7 @@ if (isset($_POST['id_candidates'])) {
             b.no_ktp AS ktp_number, 
             b.nama_institusi_s1 AS s1_institution, 
             b.nama_fakultas_s1 AS s1_faculty,
-            f.requestFor AS request_for
+            f.requestType AS request_for
         FROM 
             applicants a
         JOIN 
@@ -32,7 +32,7 @@ if (isset($_POST['id_candidates'])) {
         JOIN 
             fpk f ON a.kodeFPK = f.kodeFPK
         WHERE
-            a.id_candidates = ?
+            a.id_candidates = ? AND a.level_candidates = 6
     ";
 
   $stmt = $conn->prepare($sql);

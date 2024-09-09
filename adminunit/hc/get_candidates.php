@@ -16,8 +16,8 @@ if ($conn->connect_error) {
 if (isset($_POST['kodeFPK'])) {
   $kodeFPK = $_POST['kodeFPK'];
 
-  // Query untuk mengambil data kandidat berdasarkan kodeFPK
-  $sql = "SELECT id_candidates, nama FROM applicants WHERE kodeFPK = ?";
+  // Query untuk mengambil data kandidat berdasarkan kodeFPK dan level_candidates = 6
+  $sql = "SELECT id_candidates, nama FROM applicants WHERE kodeFPK = ? AND level_candidates = 6";
   $stmt = $conn->prepare($sql);
   $stmt->bind_param("s", $kodeFPK);
   $stmt->execute();
